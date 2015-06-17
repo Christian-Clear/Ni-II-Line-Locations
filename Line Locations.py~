@@ -1,0 +1,105 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Feb 19 14:58:55 2015
+
+@author: cpc14
+"""
+
+""
+import matplotlib.pyplot as plt
+import matplotlib.patches as ptch
+import csv
+
+i = 0
+box_height =1
+
+
+plt.xlabel('Wavenumber (cm-1)')
+plt.axis([10000, 75000, 0, 3])
+plt.tick_params(axis='y', which='both', bottom='off', top='off', labelbottom='off')
+
+f = open('Ni II Line Locations - All strong lines.csv', 'rt')
+f2 = open('Ni I Line Locations.csv', 'rt')
+f3 = open('Ni II Cross System Line Locations.csv', 'rt')
+
+try: 
+    reader = csv.reader(f)
+    for i, row in enumerate(reader):
+       
+        upper = float(row[1])
+        lower = float(row[2])
+        width = upper - lower
+        
+        height = float(row[3])
+        
+        t = plt.text(lower+width*0.7, height+0.01, row[0], color='blue')
+        
+        if i % 2 == 0:
+            hatch = '/'
+        else:
+            hatch = "\\"
+            
+        box = ptch.Rectangle((lower,0), width, height, fc='none', ec='blue', zorder=2, hatch=hatch)
+        plt.gca().add_patch(box)
+        
+finally:
+    f.close()
+    
+i=0
+row=0
+
+try: 
+    reader = csv.reader(f2)
+    for i, row in enumerate(reader):
+       
+        upper = float(row[1])
+        lower = float(row[2])
+        width = upper - lower
+        
+        
+        height = float(row[3])
+        
+        t = plt.text(lower+width*0.7, height+0.01, row[0], color='0.4')
+        
+        box = ptch.Rectangle((lower,0), width, height, fc='none', ec='0.6', zorder=2, hatch='\\')
+        plt.gca().add_patch(box)
+        
+finally:
+    f2.close()
+    
+
+i=0
+row=0
+
+try: 
+    reader = csv.reader(f3)
+    for i, row in enumerate(reader):
+       
+        upper = float(row[1])
+        lower = float(row[2])
+        width = upper - lower
+        
+        
+        height = float(row[3])
+        
+        t = plt.text(lower+width*0.7, height+0.01, row[0], color='red')
+        
+        box = ptch.Rectangle((lower,0), width, height, fc='none', ec='red', zorder=2)
+        plt.gca().add_patch(box)
+        
+finally:
+    f3.close()
+    
+
+figure = plt.gcf()
+figure.set_size_inches(19.2, 12)
+
+p = ptch.Rectangle((0, 0), 1, 1, fc="blue")
+q = ptch.Rectangle((0, 0), 1, 1, fc="0.5")
+r = ptch.Rectangle((0, 0), 1, 1, fc="red")
+plt.legend([p, q, r], ["Ni II (3F), log(gf) > -1.0 ", "Ni I  (2D), log(gf) > -1.5", "Ni II Cross System, log(gf) > -1.0"])
+    
+#plt.savefig('Ni II Singly Ionised Term Diagram.png', dpi=1000)
+
+plt.show()
+
